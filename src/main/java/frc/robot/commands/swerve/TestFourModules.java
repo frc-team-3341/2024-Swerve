@@ -29,7 +29,8 @@ public class TestFourModules extends Command {
   /*
    * TODO for the future people:
    * This may sound impossible or crazy for you, but you can do it:
-   * Create an automated testing routine that logs all the data. In industry, this is done everywhere with FPGAs and other devices. Suggested by Mr. Rongey 12/16/2023.
+   * Create an automated testing routine that logs all the data. In industry,
+   *  this is done everywhere with FPGAs and other devices. Suggested by Mr. Rongey 12/16/2023.
    */
 
   /** Creates a new TestFourModules. */

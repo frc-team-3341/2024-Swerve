@@ -52,8 +52,7 @@ public class ArcadeJoystickUtil {
         SmartDashboard.putNumber("xVal", controlsAngle);
         SmartDashboard.putNumber("yVal", controlsHypot);
   
-  
-        double output[] = new double[2];
+        double[] output = new double[2];
 
         output[0] = Math.abs(maxMagnitude) * controlsHypot;
         output[1] = controlsAngle;

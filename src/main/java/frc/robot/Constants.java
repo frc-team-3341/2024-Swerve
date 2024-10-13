@@ -25,7 +25,7 @@ public final class Constants {
 
     // MODIFY THIS WHEN SWITCHING BETWEEN CHASSIS
     // THIS IS THE FIRST THING YOU SHOULD THINK ABOUT/SEE!!!
-    public final static RobotType currentRobot = RobotType.ROBOT_2024_SIMULATION;
+    public final static RobotType currentRobot = RobotType.ROBOT_2023_IAP_SLOTH;
 
 
     public static final class SwerveConstants {

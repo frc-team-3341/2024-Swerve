@@ -58,9 +58,7 @@ public class SwerveUtil {
 
         for (int i = 0; i < modulePositions.length; i++) {
             Rotation2d moduleRot = modulePositions[i].angle;
-            poses.add(
-                    pose.plus(
-                            new Transform2d(translations[i], moduleRot)));
+            poses.add(pose.plus(new Transform2d(translations[i], moduleRot)));
         }
 
         field.getObject("XModules").setPoses(poses.toArray(poseArr));

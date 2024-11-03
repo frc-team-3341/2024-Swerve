@@ -44,6 +44,7 @@ public class RobotContainer {
 
   // Defines starting pose of robot
   // TODO - Please remove this in future if developing for AprilTags
+  //Pose2d startpose = new Pose2d(new Translation2d(0, 0), new Rotation2d());
   // add start pose if needed
   // ---------------------- END OF CONFIG SECTION --------------------------
 
@@ -79,14 +80,10 @@ public class RobotContainer {
 
 
   public RobotContainer() {
-
     // Construct swerve subsystem with appropriate modules - DO NOT REMOVE THIS
     this.constructSwerve();
-
     // Create swerve commands - DO NOT REMOVE THIS
     this.createSwerveCommands();
-
-    
     // Construct all other things
     this.configureBindings();
 

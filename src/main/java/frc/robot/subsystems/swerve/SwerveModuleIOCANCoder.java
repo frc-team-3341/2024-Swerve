@@ -4,9 +4,10 @@
 
 package frc.robot.subsystems.swerve;
 
-import com.ctre.phoenix.sensors.CANCoder;
-import com.ctre.phoenix.sensors.AbsoluteSensorRange;
-import com.ctre.phoenix.sensors.SensorInitializationStrategy;
+//import com.ctre.phoenix.sensors.CANCoder;
+//import com.ctre.phoenix.sensors.AbsoluteSensorRange;
+//import com.ctre.phoenix.sensors.SensorInitializationStrategy;
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkPIDController;
@@ -43,7 +44,7 @@ public class SwerveModuleIOCANCoder implements SwerveModuleIO {
     private PIDController turnPID;
 
     private RelativeEncoder driveEncoder;
-    private CANCoder turnEncoder;
+    private CANcoder turnEncoder;
 
     // Variables to store voltages of motors - REV stuff doesn't like getters
     private double driveVolts = 0.0;
@@ -67,15 +68,15 @@ public class SwerveModuleIOCANCoder implements SwerveModuleIO {
      * @param turnEncoderOffset Offset in degrees for module (from -180 to 180)
      * @author Aric Volman
      */
-    public SwerveModuleIOCANCoder(int num, int driveID, int turnID, int turnCANCoderID, double turnEncoderOffset,
-            boolean invert) {
+    public SwerveModuleIOCANCoder(int num, int driveID, int turnID, int turnCANCoderID, double turnEncoderOffset, boolean invert) {
 
         // TODO - Put config method calls in separate file
         // TIP or TODO - Put config method calls in separate Command object, call via Runnable when needed
         //    --> When needed: when a module's motor could hypothetically reboot during a match
 
-        turnEncoder = new CANCoder(turnCANCoderID);
-        turnEncoder.configFactoryDefault();
+        turnEncoder = new CANcoder(turnCANCoderID);
+        //turnEncoder.configFactoryDefault();
+
 
         offset = turnEncoderOffset;
 
@@ -88,8 +89,6 @@ public class SwerveModuleIOCANCoder implements SwerveModuleIO {
         turnSparkMax.restoreFactoryDefaults();
 
         turnPID = new PIDController(Constants.ModuleConstants.turnkP, 0, 0);
-
-        // turnSparkMax.setInverted(true);
 
         // Initialize encoder and PID controller
         driveEncoder = driveSparkMax.getEncoder();
@@ -124,11 +123,13 @@ public class SwerveModuleIOCANCoder implements SwerveModuleIO {
         driveEncoder.setPosition(0);
 
         // Set position of encoder to absolute mode
-        turnEncoder.setPositionToAbsolute();
-        turnEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
+
+        //turnEncoder.setPositionToAbsolute();
+        //turnEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
+
         // As of 12/16 -> Changed to +- 180 instead
         // Now this is from -90 to 0 to 90
-        turnEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
+        //turnEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
         // turnEncoder.configSensorDirection(true);
         // turnEncoder.configMagnetOffset(turnEncoderOffset);
 
@@ -148,7 +149,7 @@ public class SwerveModuleIOCANCoder implements SwerveModuleIO {
 
     public double getTurnPositionInRad() {
         // Divide by 1.0, as CANCoder has direct measurement of output
-        return Units.degreesToRadians(turnEncoder.getAbsolutePosition() - offset);
+        return Units.degreesToRadians(turnEncoder.getAbsolutePosition().getValue() - offset);
     }
 
     public void setDesiredState(SwerveModuleState state) {
@@ -244,11 +245,11 @@ public class SwerveModuleIOCANCoder implements SwerveModuleIO {
         SmartDashboard.putNumber("Drive Volts #" + this.num, this.driveVolts);
 
         // Get RPMs
-        SmartDashboard.putNumber("Turn RPM #" + this.num, (turnEncoder.getVelocity() / 360.0) * 60.0);
+        SmartDashboard.putNumber("Turn RPM #" + this.num, (turnEncoder.getVelocity().getValue() / 360.0) * 60.0);
         SmartDashboard.putNumber("Drive RPS #" + this.num,
                 driveEncoder.getVelocity() / Constants.ModuleConstants.drivingEncoderPositionFactor);
 
-        SmartDashboard.putNumber("Raw CanCODER #" + this.num, turnEncoder.getAbsolutePosition());
+        SmartDashboard.putNumber("Raw CanCODER #" + this.num, turnEncoder.getAbsolutePosition().getValue());
 
     }
 

@@ -4,9 +4,11 @@
 
 package frc.robot.subsystems.swerve;
 
-import com.ctre.phoenix.sensors.AbsoluteSensorRange;
-import com.ctre.phoenix.sensors.CANCoder;
-import com.ctre.phoenix.sensors.SensorInitializationStrategy;
+//import com.ctre.phoenix.sensors.AbsoluteSensorRange;
+//import com.ctre.phoenix.sensors.CANCoder;
+//import com.ctre.phoenix.sensors.SensorInitializationStrategy;
+
+import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkBase.IdleMode;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkLowLevel.PeriodicFrame;
@@ -44,7 +46,7 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
     private RelativeEncoder driveEncoder;
     private RelativeEncoder turnEncoder;
 
-    private CANCoder canCoder;
+    private CANcoder canCoder;
 
     // Variables to store voltages of motors - REV stuff doesn't like getters
     private double driveVolts = 0.0;
@@ -75,7 +77,7 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
 
        offset = turnEncoderOffset;
         
-       canCoder = new CANCoder(turnCANCoderID);
+       canCoder = new CANcoder(turnCANCoderID);
        driveSparkMax = new CANSparkMax(driveID, MotorType.kBrushless);
        turnSparkMax = new CANSparkMax(turnID, MotorType.kBrushless);
 
@@ -90,7 +92,7 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
        driveEncoder.setPosition(0);
        
        // Offsets the position of the CANCoder via an offset and initializes the turning encoder, placed in proper scope of [-180, 180)
-       turnEncoder.setPosition(Units.degreesToRadians(canCoder.getAbsolutePosition() - offset));
+       turnEncoder.setPosition(Units.degreesToRadians(canCoder.getAbsolutePosition().getValue() - offset));
        state.angle = new Rotation2d(turnEncoder.getPosition());
 
        this.num = num;
@@ -98,15 +100,18 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
     }
 
     public void configCANCoder() {
-        canCoder.configFactoryDefault();
+        //canCoder.configFactoryDefault();
+        //this.canCoder.getConfigurator().
 
         // Set position of encoder to absolute mode
-        canCoder.setPositionToAbsolute();
+
+        //canCoder.setPositionToAbsolute();
+
         // Boot to absolute position
-        canCoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
+        //canCoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
         // Important for matching up the offset of the angle
         // NEED THIS LINE - IF NOT, THEN WRONG OFFSETS WILL BE FOUND
-        canCoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
+        //canCoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
     }
 
     public void configDriveMotor(boolean invert) {
@@ -269,7 +274,7 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
             SmartDashboard.putNumber("Turn RPM #" + this.num, (turnEncoder.getVelocity() / 360.0) * 60.0);
             SmartDashboard.putNumber("Drive RPS #" + this.num,
                     driveEncoder.getVelocity() / Constants.ModuleConstants.drivingEncoderPositionFactor);
-            SmartDashboard.putNumber("CANCoder #" + this.num, canCoder.getAbsolutePosition());
+            SmartDashboard.putNumber("CANCoder #" + this.num, canCoder.getAbsolutePosition().getValue());
             SmartDashboard.putNumber("Drive Motor Voltage #" + this.num, driveSparkMax.getAppliedOutput());
 
             // Output of driving

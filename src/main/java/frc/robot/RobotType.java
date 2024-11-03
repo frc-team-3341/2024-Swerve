@@ -15,15 +15,15 @@ public enum RobotType {
                                                                          // after CANCoder swap
                         new int[][] { { 1, 2, 9 }, { 3, 4, 10 }, { 5, 6, 11 }, { 7, 8, 12 } }, // CAN IDs for IAP
                                                                                                // chassis
-                        true, // Enable data log or not
-                        true, // Enable XBox driving or not
-                        true, // Drive according to FMS Alliance
+                        true,  // Enable data log or not
+                        true,  // Enable XBox driving or not
+                        true,  // Drive according to FMS Alliance
                         false, // Invert speed controls for Right Trigger
                         false, // Disable climber
                         false, // Disable shooter
-                        true, // Enable PhotonVision
-                        true, // Enable additional motor telemetry
-                        true // Enable individual auto paths
+                        false, // Enable PhotonVision
+                        true,  // Enable additional motor telemetry
+                        true   // Enable individual auto paths
         ),
         // 2024 Competition Robot
         ROBOT_2024_COMPETITION(

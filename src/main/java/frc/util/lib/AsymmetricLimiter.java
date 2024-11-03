@@ -8,8 +8,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Timer;
 
 public class AsymmetricLimiter {
-    private double posMagLimit;
-    private double negMagLimit;
+    private final double posMagLimit;
+    private final double negMagLimit;
 
     private double prevVal;
     private double prevTime;

@@ -11,12 +11,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
  */
 public interface SwerveModuleIO {
    
-   /**
-    * Gets number of module
-    */
-    default int getNum() {
-      return 0;
-   }
 
    /**
     * Set swerve module's state in m/s and radians.

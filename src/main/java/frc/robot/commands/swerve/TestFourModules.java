@@ -10,11 +10,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.swerve.SwerveDrive;
+import frc.robot.subsystems.swerve.SwerveDriveTrain;
 
 public class TestFourModules extends Command {
 
-  private SwerveDrive swerve;
+  private SwerveDriveTrain swerve;
   private Joystick joy;
 
   private SendableChooser<String> pidOrPowerMode;
@@ -34,7 +34,7 @@ public class TestFourModules extends Command {
    */
 
   /** Creates a new TestFourModules. */
-  public TestFourModules(SwerveDrive swerve, Joystick joy) {
+  public TestFourModules(SwerveDriveTrain swerve, Joystick joy) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.swerve = swerve;
     this.joy = joy;

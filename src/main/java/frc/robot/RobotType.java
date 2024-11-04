@@ -8,6 +8,11 @@ package frc.robot;
  * Special class that defines the type of robot used (sim, Competition, IAP,
  * etc.)
  */
+
+//public final class RobotType {
+//
+//}
+
 public enum RobotType {
         // 2023 IAP Robot
         ROBOT_2023_IAP_SLOTH(

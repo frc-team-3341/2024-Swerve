@@ -66,8 +66,7 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
      * @param turnEncoderOffset Offset in degrees for module (from -180 to 180)
      * @author Aric Volman
      */
-    public SwerveModuleIOSparkMax(int num, int driveID, int turnID, int turnCANCoderID, double turnEncoderOffset,
-            boolean invert) {
+    public SwerveModuleIOSparkMax(int num, int driveID, int turnID, int turnCANCoderID, double turnEncoderOffset, boolean invert) {
  
        // TODO - Put config method calls in separate file
        // TIP or TODO - Put config method calls in separate Command object, call via Runnable when needed
@@ -285,8 +284,5 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
           
     }
 
-    public int getNum() {
-        return num;
-    }
 
 }

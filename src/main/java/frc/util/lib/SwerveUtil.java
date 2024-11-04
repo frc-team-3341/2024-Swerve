@@ -76,15 +76,13 @@ public class SwerveUtil {
         for (int i = 0; i < moduleIO.length; i++) {
             returnedPositions[i] = moduleIO[i].getPosition();
         }
-
         return returnedPositions;
     }
 
     /**
      * Gets module states as double[] for AdvantageScope compatibility
      * 
-     * @param states Array of swerve module states (size doesn't matter, preferably
-     *               4)
+     * @param states Array of swerve module states (size doesn't matter, preferably 4
      */
     public static double[] getDoubleStates(SwerveModuleState[] states) {
 
@@ -111,13 +109,8 @@ public class SwerveUtil {
      *                           by omega
      */
     public static ChassisSpeeds discretize(ChassisSpeeds speeds, double discretizeConstant) {
-        /*if (!RobotContainer.getSimOrNot()) {
-            return speeds;
-        }
-    */
 
         double dt = 0.02;
-
         var desiredDeltaPose = new Pose2d(
                 speeds.vxMetersPerSecond * dt,
                 speeds.vyMetersPerSecond * dt,
@@ -128,56 +121,6 @@ public class SwerveUtil {
         return new ChassisSpeeds((twist.dx / dt), (twist.dy / dt), (speeds.omegaRadiansPerSecond));
     }
 
-    /**
-     * Adds simulation to the Swerve subsystem. Works together with integration of
-     * angle and SwerveModuleIO. Requires the use of the SwerveModuleIO interface.
-     * 
-     * @param moduleIO     Array of module interface class to use
-     * @param actualStates Array of swerve module states
-     * @param kinematics   Object representing kinematics class
-     */
-    public static void addSwerveSimulation(SwerveModuleIO[] moduleIO, SwerveModuleState[] actualStates,
-            SwerveDriveKinematics kinematics) {
-        // Simulate Navx
-        int dev = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
-        SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(dev, "Yaw"));
-
-        // Find omega/angular velocity of chassis' rotation
-        // Robot oriented speeds, not field oriented
-        double omega = kinematics.toChassisSpeeds(actualStates).omegaRadiansPerSecond;
-
-        // Integrate dAngle into angular displacement
-        SwerveUtil.integratedSimAngle += 0.02 * omega * (180 / Math.PI); // convert dradians to degrees
-
-        // Set this as gyro measurement
-        angle.set(SwerveUtil.integratedSimAngle);
-
-        // Update moduleIO's sim objects with a dt of 0.02
-        for (SwerveModuleIO module : moduleIO) {
-            module.updateSim();
-        }
-    }
-
-     /**
-     * Adds fake gyro to the Swerve subsystem. Works together with integration of
-     * angle and SwerveModuleIO. Requires the use of the SwerveModuleIO interface.
-     * 
-     * @param moduleIO     Array of module interface class to use
-     * @param actualStates Array of swerve module states
-     * @param kinematics   Object representing kinematics class
-     */
-    public static double addFakeGyro(SwerveModuleIO[] moduleIO, SwerveModuleState[] actualStates,
-            SwerveDriveKinematics kinematics) {
-
-        // Find omega/angular velocity of chassis' rotation
-        // Robot oriented speeds, not field oriented
-        double omega = kinematics.toChassisSpeeds(actualStates).omegaRadiansPerSecond;
-
-        // Integrate dAngle into angular displacement
-        SwerveUtil.integratedSimAngle += 0.02 * omega * (180 / Math.PI); // convert dradians to degrees
-
-        return SwerveUtil.integratedSimAngle;
-    }
 
     /**
      * Updates all telemetry for the module every 20 ms in periodic. Very important!

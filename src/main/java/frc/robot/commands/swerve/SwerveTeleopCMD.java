@@ -2,26 +2,34 @@ package frc.robot.commands.swerve;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.swerve.SwerveDrive;
+import frc.robot.subsystems.swerve.SwerveDriveTrain;
 import frc.util.lib.AsymmetricLimiter;
 import frc.util.lib.ArcadeJoystickUtil;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.DriverStation;
 
-public class SwerveTeleop extends Command {
-   // Initialize empty swerve object
-   private final SwerveDrive swerve;
-
+public class SwerveTeleopCMD extends Command {
+   // Initialize empty swerveDriveTrain object
+   private final SwerveDriveTrain swerveDriveTrain;
+   private final Joystick joystick;
    // Create suppliers as object references
    private double inputX;
    private double inputY;
    private double x;
    private double y;
-   private double rotationSup;
-   private boolean robotCentricSup;
+   private double rotation;
+   private boolean robotCentric = false;
    private double translationRightTrigger;
+
+
+   // Define axises for using joystick
+   private final int translationAxis = XboxController.Axis.kLeftY.value; // Axis ID: 1
+   private final int strafeAxis = XboxController.Axis.kLeftX.value; // Axis ID: 0
+   private final int rotationAxis = XboxController.Axis.kRightX.value; // Axis ID: 4
 
    private double robotSpeed = 2;
 
@@ -38,26 +46,33 @@ public class SwerveTeleop extends Command {
    private final AsymmetricLimiter translationLimiter = new AsymmetricLimiter(5.0D, 1000.0D);
    private final AsymmetricLimiter rotationLimiter    = new AsymmetricLimiter(10.0D, 10.0D);
 
-   /**
-    * Creates a SwerveTeleop command, for controlling a Swerve bot.
-    * 
-    * @param swerve          - the Swerve subsystem
-    * @param x               - the translational/x component of velocity (across field)
-    * @param y               - the strafe/y component of velocity (up and down on field)
-    * @param rotationSup     - the rotational velocity of the chassis
-    * @param robotCentricSup - whether to drive as robot centric or not
-    */
-   public SwerveTeleop(SwerveDrive swerve, double x, double y, double rotationSup, double translationRightTrigger,
-         boolean robotCentricSup, boolean setAlliance) {
-      this.swerve = swerve;
-      // If doesn't want to set alliance
+//   /**
+//    * Creates a SwerveTeleop command, for controlling a Swerve bot.
+//    *
+//    * @param swerve          - the Swerve subsystem
+//    * @param x               - the translational/x component of velocity (across field)
+//    * @param y               - the strafe/y component of velocity (up and down on field)
+//    * @param rotation    - the rotational velocity of the chassis
+//    * @param robotCentric - whether to drive as robot centric or not
+//    */
+//   public SwerveTeleopCMD(SwerveDriveTrain swerve, double x, double y, double rotation, double translationRightTrigger,
+//                          boolean robotCentric, boolean setAlliance) {
+//      this.swerveDriveTrain = swerve;
+//      this.setAlliance = setAlliance;
+//      this.inputX = x;
+//      this.inputY = y;
+//      this.rotation = rotation;
+//      this.robotCentric = robotCentric;
+//      this.translationRightTrigger = translationRightTrigger;
+//      this.joyUtil = new ArcadeJoystickUtil();
+//      this.addRequirements(swerve);
+//   }
 
+   public SwerveTeleopCMD(SwerveDriveTrain swerve, Joystick joy, boolean setAlliance) {
+      this.swerveDriveTrain = swerve;
       this.setAlliance = setAlliance;
-      this.inputX = x;
-      this.inputY = y;
-      this.rotationSup = rotationSup;
-      this.robotCentricSup = robotCentricSup;
-      this.translationRightTrigger = translationRightTrigger;
+      this.joystick = joy;
+
       this.joyUtil = new ArcadeJoystickUtil();
       this.addRequirements(swerve);
    }
@@ -78,12 +93,15 @@ public class SwerveTeleop extends Command {
          }
       }
 
-      this.x = inputX;
-      this.y = inputY;
+      this.x        =  this.joystick.getRawAxis(translationAxis);
+      this.y        =  this.joystick.getRawAxis(strafeAxis);
+      this.rotation = -this.joystick.getRawAxis(rotationAxis);
+      this.translationRightTrigger = this.joystick.getRawAxis(XboxController.Axis.kRightTrigger.value);
+      //this.robotCentric = this.joystick.getRawButtonPressed(XboxController.Button.kX.value);
 
       // Get values of controls and apply deadband
       double xVal = -this.x; // Flip for XBox support
-      double yVal = this.y;
+      double yVal =  this.y;
 
       double rightTriggerVal = Math.abs(this.translationRightTrigger);
 
@@ -99,16 +117,14 @@ public class SwerveTeleop extends Command {
       xVal = MathUtil.applyDeadband(xVal, Constants.SwerveConstants.deadBand);
       yVal = MathUtil.applyDeadband(yVal, Constants.SwerveConstants.deadBand);
 
-      double rotationVal = MathUtil.applyDeadband(this.rotationSup, Constants.SwerveConstants.deadBand);
+      double rotationVal = MathUtil.applyDeadband(this.rotation, Constants.SwerveConstants.deadBand);
 
       // Apply rate limiting to rotation
       rotationVal = this.rotationLimiter.calculate(rotationVal);
 
-      double[] polarCoords = new double[2];
+      double[] polarCoords;
       if (Constants.currentRobot.xboxEnabled) {
-
          polarCoords = joyUtil.regularGamePadControls(-xVal, yVal, Constants.SwerveConstants.maxChassisTranslationalSpeed);
-
       } else {
          // Function to map joystick output to scaled polar coordinates
          polarCoords = joyUtil.convertXYToScaledPolar(xVal, yVal, Constants.SwerveConstants.maxChassisTranslationalSpeed);
@@ -122,17 +138,17 @@ public class SwerveTeleop extends Command {
       double correctedX = rightTriggerVal * xMult * newHypot * Math.cos(polarCoords[1]);
       double correctedY =  rightTriggerVal * yMult * newHypot * Math.sin(polarCoords[1]);
 
-      // Drive swerve with values
-      this.swerve.drive(new Translation2d(correctedX, correctedY),
+      // Drive swerveDriveTrain with values
+      this.swerveDriveTrain.drive(new Translation2d(correctedX, correctedY),
             rotationVal * Constants.SwerveConstants.maxChassisAngularVelocity,
-            this.robotCentricSup, false);
+            this.robotCentric, false);
    }
 
    // Called once the command ends or is interrupted.
    @Override
    public void end(boolean interrupted) {
-      this.swerve.drive(new Translation2d(0, 0), 0, true, false);
+      this.swerveDriveTrain.drive(new Translation2d(0, 0), 0, true, false);
       // PLEASE SET THIS FOR SAFETY!!!
-      this.swerve.stopMotors();
+      this.swerveDriveTrain.stopMotors();
    }
 }

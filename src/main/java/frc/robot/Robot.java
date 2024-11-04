@@ -17,14 +17,14 @@ import edu.wpi.first.wpilibj.DriverStation;
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
-  private RobotContainer m_robotContainer;
+  private RobotContainer robotContainer;
 
   
   private static Optional<Alliance> alliance = DriverStation.getAlliance();
 
   @Override
   public void robotInit() {
-    m_robotContainer = new RobotContainer();
+    robotContainer = new RobotContainer();
     
     SmartDashboard.putBoolean("Is Running", false);
   }
@@ -32,7 +32,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-    
 
   }
 
@@ -47,7 +46,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = robotContainer.getAutonomousCommand();
 
     if (m_autonomousCommand != null) {
       m_autonomousCommand.schedule();
@@ -57,7 +56,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     
-    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    m_autonomousCommand = robotContainer.getAutonomousCommand();
 
     SmartDashboard.putBoolean("Is Running", !m_autonomousCommand.isFinished());
   }
@@ -74,7 +73,7 @@ public class Robot extends TimedRobot {
     
     alliance = DriverStation.getAlliance();
     
-    m_robotContainer.initCommandInTeleop();
+    robotContainer.initCommandInTeleop();
   }
 
   @Override

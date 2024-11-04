@@ -9,8 +9,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-
-import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -23,36 +21,24 @@ import frc.util.lib.SwerveUtil;
 
 /**
  * <p>Creates a SwerveDrive class.</p>
- * 
  * <p>In its current form, it can be simulated using the simulation integration method from the static SwerveUtil class. This simulation is less precise than real life, but much better than AutoDesk Synthesis :).</p>
- * 
  * @author Aric Volman
  */
-public class SwerveDrive extends SubsystemBase {
+public class SwerveDriveTrain extends SubsystemBase {
    // Create Navx
-   private AHRS navx = new AHRS(Port.kMXP);
-
-   //Creates pdh
-   public PowerDistribution pdh = new PowerDistribution(1, PowerDistribution.ModuleType.kRev);
-
+   private final AHRS navx = new AHRS(Port.kMXP);
    // Create object representing swerve modules
-   private SwerveModuleIO[] moduleIO;
-
+   private final SwerveModuleIO[] moduleIO;
    // Create object that represents swerve module positions (i.e. radians and meters)
-   private SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
-
+   private SwerveModulePosition[] modulePositions;
    // Create kinematics object
-   private SwerveDriveKinematics kinematics;
-
+   private final SwerveDriveKinematics kinematics;
    // Create poseEstimator object
    // This can fuse Visual and Encoder odometry with different standard deviations/priorities
-   private SwerveDrivePoseEstimator poseEstimator;
-
+   private final SwerveDrivePoseEstimator poseEstimator;
    // Add field to show robot
    private Field2d field;
-
    private Rotation2d offsetNavx = new Rotation2d();
-
 
    /**
     * Creates a new SwerveDrive object. Intended to work both with real modules and
@@ -64,20 +50,17 @@ public class SwerveDrive extends SubsystemBase {
     * @param BR Swerve module - CAN 7 - Drive; CAN 8 - Turn; CAN 12 - BR CANCoder
     * @author Aric Volman
     */
-   public SwerveDrive(Pose2d startingPoint, SwerveModuleIO FL, SwerveModuleIO FR, SwerveModuleIO BL, SwerveModuleIO BR) {
+   public SwerveDriveTrain(Pose2d startingPoint, SwerveModuleIO FL, SwerveModuleIO FR, SwerveModuleIO BL, SwerveModuleIO BR) {
       // Assign modules to their object
       this.moduleIO = new SwerveModuleIO[] { FL, FR, BL, BR };
-
       // Iterate through module positions and assign initial values
       modulePositions = SwerveUtil.setModulePositions(moduleIO);
-
       // Initialize all other objects
       this.kinematics = new SwerveDriveKinematics(SwerveUtil.getModuleTranslations());
       // Can set any robot pose here (x, y, theta) -> Built in Kalman Filter
       // FUTURE: Seed pose with CV
       // Auto is field-oriented
-      this.poseEstimator = new SwerveDrivePoseEstimator(this.kinematics, new Rotation2d(), this.modulePositions,
-           startingPoint);
+      this.poseEstimator = new SwerveDrivePoseEstimator(this.kinematics, new Rotation2d(), this.modulePositions, startingPoint);
       this.field = new Field2d();
    }
 
@@ -109,7 +92,7 @@ public class SwerveDrive extends SubsystemBase {
    public void simulationPeriodic() {
       // Add simulation! Yes, with the Util class, it's that easy!
       // WARNING: This doesn't use the Navx, just the states of the modules
-      SwerveUtil.addSwerveSimulation(moduleIO, getActualStates(), kinematics);
+      //SwerveUtil.addSwerveSimulation(moduleIO, getActualStates(), kinematics);
    }
 
    /**
@@ -123,10 +106,8 @@ public class SwerveDrive extends SubsystemBase {
     */
    public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
 
-      ChassisSpeeds speeds = fieldRelative
-            ? ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(), rotation,
-                  this.getRotation())
-            : new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
+      ChassisSpeeds speeds = fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(), rotation, this.getRotation())
+              : new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
 
       speeds = SwerveUtil.discretize(speeds, -4.0);
 
@@ -134,17 +115,13 @@ public class SwerveDrive extends SubsystemBase {
 
       // MUST USE SECOND TYPE OF METHOD
       SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, speeds,
-            Constants.SwerveConstants.maxWheelLinearVelocityMeters,
-            Constants.SwerveConstants.maxChassisTranslationalSpeed,
-            Constants.SwerveConstants.maxChassisAngularVelocity);
+              Constants.SwerveConstants.maxWheelLinearVelocityMeters,
+              Constants.SwerveConstants.maxChassisTranslationalSpeed,
+              Constants.SwerveConstants.maxChassisAngularVelocity);
 
       for (int i = 0; i < swerveModuleStates.length; i++) {
          this.moduleIO[i].setDesiredState(swerveModuleStates[i]);
       }
-
-      
-      
-
    }
 
    /**
@@ -171,11 +148,9 @@ public class SwerveDrive extends SubsystemBase {
     */
    public SwerveModuleState[] getSetpointStates() {
       SwerveModuleState[] states = new SwerveModuleState[moduleIO.length];
-
       for (int i = 0; i < states.length; i++) {
          states[i] = this.moduleIO[i].getDesiredState();
       }
-
       return states;
    }
 
@@ -184,11 +159,9 @@ public class SwerveDrive extends SubsystemBase {
     */
    public SwerveModuleState[] getActualStates() {
       SwerveModuleState[] states = new SwerveModuleState[moduleIO.length];
-
       for (int i = 0; i < states.length; i++) {
          states[i] = this.moduleIO[i].getActualModuleState();
       }
-
       return states;
    }
 
@@ -284,8 +257,6 @@ public class SwerveDrive extends SubsystemBase {
       SmartDashboard.putNumber("offsetNavx", offsetNavx.getDegrees());
       SmartDashboard.putNumber("pose.getRotation()", pose.getRotation().getDegrees());
       SmartDashboard.putNumber("navx.getRotation2d", navx.getRotation2d().getDegrees());
-      
-
    }
 
    /**
@@ -311,14 +282,4 @@ public class SwerveDrive extends SubsystemBase {
       setModulesPositions(0,0); 
       setModuleVoltages(0, 0);
    }
-
-   public Command resetHeadingCommand() {
-      return runOnce(() -> {
-         navx.reset();
-        // Pose2d p = new Pose2d(0, 0, new Rotation2d(Units.degreesToRadians(15)));
-        // offsetNavx = getRotation().minus(p.getRotation()).plus(offsetNavx);
-      
-      });
-   }
-
 }

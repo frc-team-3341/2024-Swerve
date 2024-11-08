@@ -16,17 +16,10 @@ public class SwerveTeleopCMD extends Command {
    // Initialize empty swerveDriveTrain object
    private final SwerveDriveTrain swerveDriveTrain;
    private final Joystick joystick;
-   // Create suppliers as object references
-   private double inputX;
-   private double inputY;
-   private double x;
-   private double y;
-   private double rotation;
    private boolean robotCentric = false;
-   private double translationRightTrigger;
 
 
-   // Define axises for using joystick
+    // Define axises for using joystick
    private final int translationAxis = XboxController.Axis.kLeftY.value; // Axis ID: 1
    private final int strafeAxis = XboxController.Axis.kLeftX.value; // Axis ID: 0
    private final int rotationAxis = XboxController.Axis.kRightX.value; // Axis ID: 4
@@ -93,17 +86,17 @@ public class SwerveTeleopCMD extends Command {
          }
       }
 
-      this.x        =  this.joystick.getRawAxis(translationAxis);
-      this.y        =  this.joystick.getRawAxis(strafeAxis);
-      this.rotation = -this.joystick.getRawAxis(rotationAxis);
-      this.translationRightTrigger = this.joystick.getRawAxis(XboxController.Axis.kRightTrigger.value);
+      double x = this.joystick.getRawAxis(translationAxis);
+      double y = this.joystick.getRawAxis(strafeAxis);
+      double rotation = -this.joystick.getRawAxis(rotationAxis);
+      double translationRightTrigger = this.joystick.getRawAxis(XboxController.Axis.kRightTrigger.value);
       //this.robotCentric = this.joystick.getRawButtonPressed(XboxController.Button.kX.value);
 
       // Get values of controls and apply deadband
-      double xVal = -this.x; // Flip for XBox support
-      double yVal =  this.y;
+      double xVal = -x; // Flip for XBox support
+      double yVal = y;
 
-      double rightTriggerVal = Math.abs(this.translationRightTrigger);
+      double rightTriggerVal = Math.abs(translationRightTrigger);
 
       if (rightTriggerVal < 0.1) {
          rightTriggerVal = 0.1;
@@ -117,7 +110,7 @@ public class SwerveTeleopCMD extends Command {
       xVal = MathUtil.applyDeadband(xVal, Constants.SwerveConstants.deadBand);
       yVal = MathUtil.applyDeadband(yVal, Constants.SwerveConstants.deadBand);
 
-      double rotationVal = MathUtil.applyDeadband(this.rotation, Constants.SwerveConstants.deadBand);
+      double rotationVal = MathUtil.applyDeadband(rotation, Constants.SwerveConstants.deadBand);
 
       // Apply rate limiting to rotation
       rotationVal = this.rotationLimiter.calculate(rotationVal);

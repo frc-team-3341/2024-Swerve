@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.util.Units;
+import frc.robot.subsystems.swerve.SwerveModuleIOSparkMax;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -27,6 +28,20 @@ public final class Constants {
     // THIS IS THE FIRST THING YOU SHOULD THINK ABOUT/SEE!!!
     public final static RobotType currentRobot = RobotType.ROBOT_2023_IAP_SLOTH;
 
+    public static final class SwerveModuleIOConfig{
+        static SwerveModuleIOSparkMax module0 = new SwerveModuleIOSparkMax(
+                0, 1,2,9,-62.51,false);
+                //num // driveID // turnID // turnCANCoderID // turnEncoderOffset // invert
+        static SwerveModuleIOSparkMax module1 = new SwerveModuleIOSparkMax(
+                1, 3,4,10,-179.82,true);
+                //num // driveID // turnID // turnCANCoderID // turnEncoderOffset // invert
+        static SwerveModuleIOSparkMax module2 = new SwerveModuleIOSparkMax(
+                2, 5,6,11,108.11,false);
+                //num // driveID // turnID // turnCANCoderID // turnEncoderOffset // invert
+        static SwerveModuleIOSparkMax module3 = new SwerveModuleIOSparkMax(
+                3, 7,8,12,82.62,true);
+                //num // driveID // turnID // turnCANCoderID // turnEncoderOffset // invert
+    }
 
     public static final class SwerveConstants {
         // These can be safely adjusted without adjusting discrete

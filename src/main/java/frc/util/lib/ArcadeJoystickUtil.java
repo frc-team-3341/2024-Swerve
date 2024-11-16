@@ -67,45 +67,9 @@ public class ArcadeJoystickUtil {
      * @return double[] of radial component and angular component, such that r ∈ [0, <i>magnitude</i>] and 𝜃 ∈ [0, 2𝜋].
      */
     public double[] convertXYToScaledPolar(double xVal, double yVal, double maxMagnitude) {
-        /*
-         * Example calculation with algorithm:
-            * Original inputs: y = 1.0, x = 0.3
-            * Scaled set of inputs: y = 1.0/3.0, x  = 0.3/3.0
-            * 
-            * arctan(1/0.3) in deg = 73.3007558 degrees
-            * Same angle for the other case
-            * 
-            * Since 73 > 45:
-            *    sqrt(1^2 + tan^2((90 - 73.3007558) degrees)) = Unit Hypotenuse = 1.04403065071
-            * 
-            * sqrt((1)^2+(0.3)^2) = calculated hypot = 1.04403065089 (Same as Unit Hypotenuse)
-            * Results in 1.0 magnitude of vector
-            * 
-            * sqrt((1/3)^2+(0.3/3)^2) = alternate calculated hypot = 0.34801021696
-            * 0.34801021696/1.04403065089 = 0.3333... Boom!, results in 1/3 magnitude of vector
-            *
-        * 2nd example calculation with algorithm (at limits):
-            * Original inputs: y = 1.0, x = 1.0
-            * Scaled set of inputs: y = 0.5, x = 0.5
-            * 
-            * arctan(1/1) in deg = 45 degrees
-            * Same angle for the other case
-            * 
-            * Since 45 >= 45:
-            *    sqrt(1^2 + tan^2(45 degrees)) = Unit Hypotenuse = 1.41421356237
-            * 
-            * sqrt((1)^2+(1)^2) = calculated hypot = 1.41421356237 (Same as Unit Hypotenuse)
-            * Results in 1.0 magnitude of vector
-            * 
-            * sqrt((0.5)^2+(0.5)^2) = alternate calculated hypot = 0.70710678118
-            * 0.70710678118/1.41421356237 = 0.5... Boom!, results in 1/2 magnitude of vector
-            *
-         */
-
         // Define control hypothenuse and control signed angle
         controlsAngle = Math.atan2(yVal, xVal);
         controlsHypot = Math.hypot(xVal, yVal);
-
         // Define limited angle from [0, PI/2]
         limitedAngle = Math.atan2(Math.abs(yVal), Math.abs(xVal));
 

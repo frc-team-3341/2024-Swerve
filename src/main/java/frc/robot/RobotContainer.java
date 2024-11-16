@@ -35,36 +35,29 @@ public class RobotContainer {
           Constants.SwerveModuleIOConfig.module2,
           Constants.SwerveModuleIOConfig.module3);
 
-  private final SwerveTeleopCMD swerveTeleopCMD = new SwerveTeleopCMD(this.swerveDriveTrain, this.drivingXbox , Constants.currentRobot.allianceEnabled);
+  private final SwerveTeleopCMD swerveTeleopCMD = new SwerveTeleopCMD(this.swerveDriveTrain,
+          this.drivingXbox , Constants.currentRobot.allianceEnabled);
 
-  // Empty testing commands (not used if not needed)
-  //private TestFourModules allFour;
-  // Empty Auto object
-
-  // Empty CrabDrive object
-  //private CrabDrive crabDrive;
+  // private TestFourModules allFour;
+  // private CrabDrive crabDrive;
 
   // Field centric toggle - true for field centric, false for robot centric
-  private boolean fieldCentricToggle = true;
+
 
 
   public RobotContainer() {
     // Construct swerveDriveTrain subsystem with appropriate modules - DO NOT REMOVE THIS
-    //this.constructSwerve();
+    // this.constructSwerve();
     // Create swerveDriveTrain commands - DO NOT REMOVE THIS
-
-    //this.createSwerveCommands();
+    // this.createSwerveCommands();
     this.swerveDriveTrain.setDefaultCommand(swerveTeleopCMD);
-
-    // Construct all other things
     this.configureBindings();
   }
 
   private void constructSwerve() {
-    Pose2d startpose = new Pose2d(new Translation2d(0, 0), new Rotation2d());
+    //Pose2d startpose = new Pose2d(new Translation2d(0, 0), new Rotation2d());
     if (Constants.currentRobot.dataLogEnabled) {
-      // Data logging works on both real + simulated robot with all DriverStation
-      // outputs!
+      // Data logging works on both real + simulated robot with all DriverStation outputs!
       DataLogManager.start();
       DriverStation.startDataLog(DataLogManager.getLog(), false);
       SmartDashboard.putString("Data Log Folder: ", DataLogManager.getLogDir());
@@ -75,25 +68,23 @@ public class RobotContainer {
               Constants.currentRobot.moduleCANIDs[i][1], Constants.currentRobot.moduleCANIDs[i][2],
               Constants.currentRobot.moduleAngleOffsets[i], Constants.SwerveConstants.moduleInverts[i]);
     }
-    this.swerveDriveTrain = new SwerveDriveTrain(startpose, this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
+    this.swerveDriveTrain = new SwerveDriveTrain(this.startpose, this.swerveMods[0], this.swerveMods[1], this.swerveMods[2], this.swerveMods[3]);
   }
 
   private void createSwerveCommands() {
-
     //toggle FieldCentric
-    if(this.drivingXbox.getRawButtonPressed(XboxController.Button.kX.value)){
-      fieldCentricToggle = !fieldCentricToggle;
-    }
-    SmartDashboard.putBoolean("isFieldCentric", fieldCentricToggle);
-
-      // Empty SwerveTeleop object
-//    SwerveTeleopCMD swerveTeleopCMD = new SwerveTeleopCMD(this.swerveDriveTrain, -this.drivingXbox.getRawAxis(translationAxis),
-//              -this.drivingXbox.getRawAxis(strafeAxis),
-//              -this.drivingXbox.getRawAxis(rotationAxis),
-//              this.drivingXbox.getRawAxis(XboxController.Axis.kRightTrigger.value),
-//              fieldCentricToggle,
-//              Constants.currentRobot.allianceEnabled);
-
+//    if(this.drivingXbox.getRawButtonPressed(XboxController.Button.kX.value)){
+//      fieldCentricToggle = !fieldCentricToggle;
+//    }
+//    SmartDashboard.putBoolean("isFieldCentric", fieldCentricToggle);
+    // Empty SwerveTeleop object
+//    SwerveTeleopCMD swerveTeleopCMD = new SwerveTeleopCMD(this.swerveDriveTrain,
+//            -this.drivingXbox.getRawAxis(translationAxis),
+//            -this.drivingXbox.getRawAxis(strafeAxis),
+//            -this.drivingXbox.getRawAxis(rotationAxis),
+//            this.drivingXbox.getRawAxis(XboxController.Axis.kRightTrigger.value),
+//            fieldCentricToggle,
+//            Constants.currentRobot.allianceEnabled);
     //SwerveTeleopCMD swerveTeleopCMD = new SwerveTeleopCMD(this.swerveDriveTrain, this.drivingXbox , Constants.currentRobot.allianceEnabled);
 
 

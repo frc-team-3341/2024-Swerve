@@ -86,9 +86,12 @@ public class SwerveTeleopCMD extends Command {
          }
       }
 
-      double x = this.joystick.getRawAxis(translationAxis);
-      double y = this.joystick.getRawAxis(strafeAxis);
-      double rotation = -this.joystick.getRawAxis(rotationAxis);
+      //double x = this.joystick.getRawAxis(translationAxis);
+      //double y = this.joystick.getRawAxis(strafeAxis);
+      //double rotation = -this.joystick.getRawAxis(rotationAxis);
+      double x = this.joystick.getRawAxis(XboxController.Axis.kLeftY.value);
+      double y = this.joystick.getRawAxis(XboxController.Axis.kLeftX.value);
+      double rotation = -this.joystick.getRawAxis(XboxController.Axis.kRightX.value);
       double translationRightTrigger = this.joystick.getRawAxis(XboxController.Axis.kRightTrigger.value);
       //this.robotCentric = this.joystick.getRawButtonPressed(XboxController.Button.kX.value);
 

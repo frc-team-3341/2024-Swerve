@@ -29,16 +29,16 @@ public final class Constants {
     public final static RobotType currentRobot = RobotType.ROBOT_2023_IAP_SLOTH;
 
     public static final class SwerveModuleIOConfig{
-        static SwerveModuleIOSparkMax module0 = new SwerveModuleIOSparkMax(
+        static SwerveModuleIOSparkMax module0 = new SwerveModuleIOSparkMax(//front left
                 0, 1,2,9,-62.51,false);
                 //num // driveID // turnID // turnCANCoderID // turnEncoderOffset // invert
-        static SwerveModuleIOSparkMax module1 = new SwerveModuleIOSparkMax(
+        static SwerveModuleIOSparkMax module1 = new SwerveModuleIOSparkMax(//front right
                 1, 3,4,10,-179.82,true);
                 //num // driveID // turnID // turnCANCoderID // turnEncoderOffset // invert
-        static SwerveModuleIOSparkMax module2 = new SwerveModuleIOSparkMax(
+        static SwerveModuleIOSparkMax module2 = new SwerveModuleIOSparkMax(//back left
                 2, 5,6,11,108.11,false);
                 //num // driveID // turnID // turnCANCoderID // turnEncoderOffset // invert
-        static SwerveModuleIOSparkMax module3 = new SwerveModuleIOSparkMax(
+        static SwerveModuleIOSparkMax module3 = new SwerveModuleIOSparkMax(//back right
                 3, 7,8,12,82.62,true);
                 //num // driveID // turnID // turnCANCoderID // turnEncoderOffset // invert
     }

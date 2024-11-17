@@ -1,13 +1,4 @@
 {
-  "HALProvider": {
-    "Other Devices": {
-      "navX-Sensor[0]": {
-        "header": {
-          "open": true
-        }
-      }
-    }
-  },
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
@@ -78,11 +69,6 @@
         "window": {
           "visible": true
         }
-      },
-      "/SmartDashboard/SendableChooser[2]": {
-        "window": {
-          "visible": true
-        }
       }
     }
   },
@@ -118,6 +104,9 @@
     }
   },
   "NetworkTables Info": {
+    "Connections": {
+      "open": true
+    },
     "visible": true
   },
   "Plot": {

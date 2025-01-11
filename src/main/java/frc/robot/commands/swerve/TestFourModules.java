@@ -48,7 +48,7 @@ public class TestFourModules extends Command {
     pidOrPowerMode.addOption(modeStrings[0], modeStrings[0]);
     pidOrPowerMode.addOption(modeStrings[1], modeStrings[1]);
     pidOrPowerMode.setDefaultOption(modeStrings[0], modeStrings[0]);
-    SmartDashboard.putData(pidOrPowerMode);
+    //SmartDashboard.putData(pidOrPowerMode);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -158,7 +158,7 @@ public class TestFourModules extends Command {
         index++;
       }
       
-      SmartDashboard.putNumber("Index of button", index);
+      //SmartDashboard.putNumber("Index of button", index);
     }
   }
 

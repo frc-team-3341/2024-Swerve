@@ -67,32 +67,25 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
      * @author Aric Volman
      */
     public SwerveModuleIOSparkMax(int num, int driveID, int turnID, int turnCANCoderID, double turnEncoderOffset, boolean invert) {
- 
-       // TODO - Put config method calls in separate file
-       // TIP or TODO - Put config method calls in separate Command object, call via Runnable when needed
-       //    --> When needed: when a module's motor could hypothetically reboot during a match
+        this.offset = turnEncoderOffset;
+        this.canCoder = new CANCoder(turnCANCoderID);
+        this.driveSparkMax = new CANSparkMax(driveID, MotorType.kBrushless);
+        this.turnSparkMax = new CANSparkMax(turnID, MotorType.kBrushless);
 
-       offset = turnEncoderOffset;
-        
-       canCoder = new CANCoder(turnCANCoderID);
-       driveSparkMax = new CANSparkMax(driveID, MotorType.kBrushless);
-       turnSparkMax = new CANSparkMax(turnID, MotorType.kBrushless);
+        configCANCoder();
+        configDriveMotor(invert);
+        configTurnMotor();
 
-       configCANCoder();
-       configDriveMotor(invert);
-       configTurnMotor();
+        this.driveSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 65535);
+        this.turnSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 65535);
+        this.turnSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 20);
 
-       driveSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 65535);
-       turnSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 65535);
-       turnSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 20);
-
-       driveEncoder.setPosition(0);
+        this.driveEncoder.setPosition(0);
        
-       // Offsets the position of the CANCoder via an offset and initializes the turning encoder, placed in proper scope of [-180, 180)
-       turnEncoder.setPosition(Units.degreesToRadians(canCoder.getAbsolutePosition() - offset));
-       state.angle = new Rotation2d(turnEncoder.getPosition());
-
-       this.num = num;
+        // Offsets the position of the CANCoder via an offset and initializes the turning encoder, placed in proper scope of [-180, 180)
+        this.turnEncoder.setPosition(Units.degreesToRadians(canCoder.getAbsolutePosition() - offset));
+        this.state.angle = new Rotation2d(turnEncoder.getPosition());
+        this.num = num;
 
     }
 

@@ -140,4 +140,35 @@ public class SwerveUtil {
     public static Translation2d[] getModuleTranslations() {
         return translations;
     }
+
+    /**
+     * Adds simulation to the Swerve subsystem. Works together with integration of
+     * angle and SwerveModuleIO. Requires the use of the SwerveModuleIO interface.
+     *
+     * @param moduleIO     Array of module interface class to use
+     * @param actualStates Array of swerve module states
+     * @param kinematics   Object representing kinematics class
+     */
+    public static void addSwerveSimulation(SwerveModuleIO[] moduleIO, SwerveModuleState[] actualStates,
+                                           SwerveDriveKinematics kinematics) {
+        // Simulate Navx
+        int dev = SimDeviceDataJNI.getSimDeviceHandle("navX-Sensor[0]");
+        SimDouble angle = new SimDouble(SimDeviceDataJNI.getSimValueHandle(dev, "Yaw"));
+
+        // Find omega/angular velocity of chassis' rotation
+        // Robot oriented speeds, not field oriented
+        double omega = kinematics.toChassisSpeeds(actualStates).omegaRadiansPerSecond;
+
+        // Integrate dAngle into angular displacement
+        SwerveUtil.integratedSimAngle += 0.02 * omega * (180 / Math.PI); // convert dradians to degrees
+
+        // Set this as gyro measurement
+        angle.set(SwerveUtil.integratedSimAngle);
+
+        // Update moduleIO's sim objects with a dt of 0.02
+        for (SwerveModuleIO module : moduleIO) {
+            module.updateSim();
+        }
+    }
+
 }

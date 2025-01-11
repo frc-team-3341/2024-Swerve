@@ -39,28 +39,12 @@ public class SwerveTeleopCMD extends Command {
    private final AsymmetricLimiter translationLimiter = new AsymmetricLimiter(5.0D, 1000.0D);
    private final AsymmetricLimiter rotationLimiter    = new AsymmetricLimiter(10.0D, 10.0D);
 
-//   /**
-//    * Creates a SwerveTeleop command, for controlling a Swerve bot.
-//    *
-//    * @param swerve          - the Swerve subsystem
-//    * @param x               - the translational/x component of velocity (across field)
-//    * @param y               - the strafe/y component of velocity (up and down on field)
-//    * @param rotation    - the rotational velocity of the chassis
-//    * @param robotCentric - whether to drive as robot centric or not
-//    */
-//   public SwerveTeleopCMD(SwerveDriveTrain swerve, double x, double y, double rotation, double translationRightTrigger,
-//                          boolean robotCentric, boolean setAlliance) {
-//      this.swerveDriveTrain = swerve;
-//      this.setAlliance = setAlliance;
-//      this.inputX = x;
-//      this.inputY = y;
-//      this.rotation = rotation;
-//      this.robotCentric = robotCentric;
-//      this.translationRightTrigger = translationRightTrigger;
-//      this.joyUtil = new ArcadeJoystickUtil();
-//      this.addRequirements(swerve);
-//   }
-
+  /**
+   * Creates a SwerveTeleop command, for controlling a Swerve bot.
+   *
+   * @param swerve          - the Swerve subsystem
+   * @param joy             - joystick controller
+   */
    public SwerveTeleopCMD(SwerveDriveTrain swerve, Joystick joy, boolean setAlliance) {
       this.swerveDriveTrain = swerve;
       this.setAlliance = setAlliance;
@@ -118,13 +102,7 @@ public class SwerveTeleopCMD extends Command {
       // Apply rate limiting to rotation
       rotationVal = this.rotationLimiter.calculate(rotationVal);
 
-      double[] polarCoords;
-      if (Constants.currentRobot.xboxEnabled) {
-         polarCoords = joyUtil.regularGamePadControls(-xVal, yVal, Constants.SwerveConstants.maxChassisTranslationalSpeed);
-      } else {
-         // Function to map joystick output to scaled polar coordinates
-         polarCoords = joyUtil.convertXYToScaledPolar(xVal, yVal, Constants.SwerveConstants.maxChassisTranslationalSpeed);
-      }
+      double[] polarCoords = joyUtil.regularGamePadControls(-xVal, yVal, Constants.SwerveConstants.maxChassisTranslationalSpeed);
 
       double newHypot = robotSpeed*translationLimiter.calculate(polarCoords[0]);
 

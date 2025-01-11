@@ -54,7 +54,7 @@ public class SwerveDriveTrain extends SubsystemBase {
       // Assign modules to their object
       this.moduleIO = new SwerveModuleIO[] { FL, FR, BL, BR };
       // Iterate through module positions and assign initial values
-      modulePositions = SwerveUtil.setModulePositions(moduleIO);
+      modulePositions = SwerveUtil.setModulePositions(this.moduleIO);
       // Initialize all other objects
       this.kinematics = new SwerveDriveKinematics(SwerveUtil.getModuleTranslations());
       // Can set any robot pose here (x, y, theta) -> Built in Kalman Filter
@@ -66,33 +66,31 @@ public class SwerveDriveTrain extends SubsystemBase {
 
    public void periodic() {
       // Update module positions
-      modulePositions = SwerveUtil.setModulePositions(moduleIO);
+      modulePositions = SwerveUtil.setModulePositions(this.moduleIO);
 
       // Update odometry, field, and poseEstimator
       this.poseEstimator.update(this.getRotation(), this.modulePositions);
       this.field.setRobotPose(this.getPoseFromEstimator());
 
       // Update telemetry of each swerve module
-      SwerveUtil.updateTelemetry(moduleIO);
+      SwerveUtil.updateTelemetry(this.moduleIO);
 
       // Draw poses of robot's modules in SmartDashboard
       SwerveUtil.drawModulePoses(modulePositions, field, getPoseFromEstimator());
 
       // Put field on SmartDashboard
-      SmartDashboard.putData("Field", this.field);
-      SmartDashboard.putNumberArray("Actual States", SwerveUtil.getDoubleStates(getActualStates()));
-      SmartDashboard.putNumberArray("Setpoint States", SwerveUtil.getDoubleStates(getSetpointStates()));
-      SmartDashboard.putNumber("Robot Rotation", getPoseFromEstimator().getRotation().getRadians());
-
-   
-      SmartDashboard.putNumber("Angle", getHeading());
+      //SmartDashboard.putData("Field", this.field);
+      //SmartDashboard.putNumberArray("Actual States", SwerveUtil.getDoubleStates(getActualStates()));
+      //SmartDashboard.putNumberArray("Setpoint States", SwerveUtil.getDoubleStates(getSetpointStates()));
+      //SmartDashboard.putNumber("Robot Rotation", getPoseFromEstimator().getRotation().getRadians());
+      //SmartDashboard.putNumber("Angle", getHeading());
 
    }
 
    public void simulationPeriodic() {
       // Add simulation! Yes, with the Util class, it's that easy!
       // WARNING: This doesn't use the Navx, just the states of the modules
-      //SwerveUtil.addSwerveSimulation(moduleIO, getActualStates(), kinematics);
+      SwerveUtil.addSwerveSimulation(this.moduleIO, this.getActualStates(), this.kinematics);
    }
 
    /**

@@ -49,8 +49,8 @@ public class ArcadeJoystickUtil {
         controlsAngle = Math.atan2(yVal, xVal);
         controlsHypot = Math.hypot(xVal, yVal);
 
-        SmartDashboard.putNumber("xVal", controlsAngle);
-        SmartDashboard.putNumber("yVal", controlsHypot);
+        //SmartDashboard.putNumber("xVal", controlsAngle);
+        //SmartDashboard.putNumber("yVal", controlsHypot);
   
         double[] output = new double[2];
 
@@ -89,8 +89,8 @@ public class ArcadeJoystickUtil {
         output[0] = Math.abs(maxMagnitude) * radialOutput;
         output[1] = controlsAngle;
         
-        SmartDashboard.putNumber("Radial Output of Joystick:", radialOutput);
-        SmartDashboard.putNumber("Angular Output of Joystick:", output[1]);
+        //SmartDashboard.putNumber("Radial Output of Joystick:", radialOutput);
+        //SmartDashboard.putNumber("Angular Output of Joystick:", output[1]);
         // SmartDashboard.putNumber("Radial Output in Magnitude:", output[0]);
         // SmartDashboard.putNumber("Controls Hypot", controlsHypot);
         // SmartDashboard.putNumber("Unit Hypot:", unitHypot);

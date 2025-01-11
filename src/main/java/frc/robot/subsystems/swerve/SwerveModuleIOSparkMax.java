@@ -80,15 +80,15 @@ public class SwerveModuleIOSparkMax implements SwerveModuleIO {
        driveSparkMax = new CANSparkMax(driveID, MotorType.kBrushless);
        turnSparkMax = new CANSparkMax(turnID, MotorType.kBrushless);
 
-       configCANCoder();
-       configDriveMotor(invert);
-       configTurnMotor();
+        configCANCoder();
+        configDriveMotor(invert);
+        configTurnMotor();
 
-       driveSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 65535);
-       turnSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 65535);
-       turnSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 20);
+        this.driveSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 65535);
+        this.turnSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus3, 65535);
+        this.turnSparkMax.setPeriodicFramePeriod(PeriodicFrame.kStatus5, 20);
 
-       driveEncoder.setPosition(0);
+        this.driveEncoder.setPosition(0);
        
        // Offsets the position of the CANCoder via an offset and initializes the turning encoder, placed in proper scope of [-180, 180)
        turnEncoder.setPosition(Units.degreesToRadians(canCoder.getAbsolutePosition().getValue() - offset));

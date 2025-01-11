@@ -76,9 +76,6 @@
     "Persistent Values": {
       "open": false
     },
-    "Transitory Values": {
-      "open": false
-    },
     "transitory": {
       "LiveWindow": {
         ".status": {
@@ -104,7 +101,10 @@
     }
   },
   "NetworkTables Info": {
-    "Connections": {
+    "Server": {
+      "Publishers": {
+        "open": true
+      },
       "open": true
     },
     "visible": true

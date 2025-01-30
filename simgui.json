@@ -1,7 +1,37 @@
 {
   "HALProvider": {
     "Other Devices": {
-      "navX-Sensor[0]": {
+      "SPARK MAX [1]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX (v6)[2]/Rotor Sensor": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX (v6)[51]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[50]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[51]/Integrated Sensor": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[52]/Integrated Sensor": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon FX[8]/Integrated Sensor": {
         "header": {
           "open": true
         }
@@ -11,75 +41,63 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
-      "/LiveWindow/SwerveDrive": "Subsystem",
-      "/LiveWindow/Ungrouped/PIDController[10]": "PIDController",
-      "/LiveWindow/Ungrouped/PIDController[11]": "PIDController",
+      "/LiveWindow/SwerveSubsystem": "Subsystem",
       "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
-      "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
-      "/LiveWindow/Ungrouped/PIDController[3]": "PIDController",
-      "/LiveWindow/Ungrouped/PIDController[4]": "PIDController",
-      "/LiveWindow/Ungrouped/PIDController[5]": "PIDController",
-      "/LiveWindow/Ungrouped/PIDController[6]": "PIDController",
-      "/LiveWindow/Ungrouped/PIDController[7]": "PIDController",
-      "/LiveWindow/Ungrouped/PIDController[8]": "PIDController",
-      "/LiveWindow/Ungrouped/PIDController[9]": "PIDController",
+      "/LiveWindow/Ungrouped/Pigeon 2 [13]": "Gyro",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
-      "/LiveWindow/Ungrouped/navX-Sensor[4]": "Gyro",
+      "/SmartDashboard/Alerts": "Alerts",
+      "/SmartDashboard/Encoders": "Alerts",
       "/SmartDashboard/Field": "Field2d",
+      "/SmartDashboard/IMU": "Alerts",
+      "/SmartDashboard/JSON": "Alerts",
+      "/SmartDashboard/Motors": "Alerts",
+      "/SmartDashboard/Pigeon 2 (v6) [13]": "Gyro",
+      "/SmartDashboard/Pigeon 2 [13]": "Gyro",
       "/SmartDashboard/SendableChooser[0]": "String Chooser",
-      "/SmartDashboard/SendableChooser[1]": "String Chooser",
-      "/SmartDashboard/SendableChooser[2]": "String Chooser"
+      "/SmartDashboard/Swerve Drive": "Alerts",
+      "/SmartDashboard/VisionSystemSim-Vision/Sim Field": "Field2d",
+      "/SmartDashboard/navX-Sensor[1]": "Gyro",
+      "/SmartDashboard/navX-Sensor[4]": "Gyro"
     },
     "windows": {
-      "/SmartDashboard/Field": {
-        "Module0": {
-          "length": 0.4000000059604645,
-          "width": 0.4000000059604645
-        },
-        "Module1": {
-          "length": 0.4000000059604645,
-          "width": 0.4000000059604645
-        },
-        "Module2": {
-          "length": 0.4000000059604645,
-          "width": 0.4000000059604645
-        },
-        "Module3": {
-          "length": 0.4000000059604645,
-          "width": 0.4000000059604645
-        },
-        "Robot": {
-          "length": 0.6984999775886536,
-          "width": 0.6984999775886536
-        },
-        "XModules": {
-          "arrowSize": 25,
-          "length": 0.4000000059604645,
-          "width": 0.4000000059604645
-        },
-        "bottom": 1476,
-        "height": 8.210550308227539,
-        "image": "C:\\Users\\outre\\Documents\\2024-Crescendo-FRC-3341\\2024-Competition-Code\\2024-field.png",
-        "left": 150,
-        "right": 2961,
-        "top": 79,
-        "traj": {
-          "arrowColor": [
-            1.0,
-            1.0,
-            1.0,
-            255.0
-          ],
-          "arrows": false,
-          "style": "Track",
-          "width": 0.6899999976158142
-        },
-        "width": 16.541748046875,
+      "/FMSInfo": {
         "window": {
           "visible": true
         }
       },
-      "/SmartDashboard/SendableChooser[2]": {
+      "/SmartDashboard/Field": {
+        "OdometryPose": {
+          "arrowColor": [
+            255.0,
+            255.0,
+            0.0,
+            255.0
+          ],
+          "color": [
+            224.99996948242188,
+            0.0,
+            255.0,
+            255.0
+          ]
+        },
+        "XModules": {
+          "arrowColor": [
+            0.09611687064170837,
+            0.17414122819900513,
+            0.9803921580314636,
+            255.0
+          ],
+          "arrowSize": 33,
+          "arrowWeight": 3.0,
+          "style": "Hidden"
+        },
+        "bottom": 1638,
+        "builtin": "2025 Reefscape",
+        "height": 8.051901817321777,
+        "left": 534,
+        "right": 3466,
+        "top": 291,
+        "width": 17.54825210571289,
         "window": {
           "visible": true
         }
@@ -87,65 +105,25 @@
     }
   },
   "NetworkTables": {
-    "Persistent Values": {
-      "open": false
-    },
-    "Transitory Values": {
-      "open": false
-    },
     "transitory": {
-      "LiveWindow": {
-        ".status": {
-          "open": true
-        },
-        "open": true
-      },
-      "Shuffleboard": {
-        ".recording": {
-          "open": true
-        },
+      "FMSInfo": {
         "open": true
       },
       "SmartDashboard": {
-        "SendableChooser[0]": {
+        "Field": {
           "open": true
         },
-        "SendableChooser[1]": {
+        "open": true,
+        "swerve": {
           "open": true
-        },
-        "open": true
+        }
       }
     }
   },
   "NetworkTables Info": {
+    "Server": {
+      "open": true
+    },
     "visible": true
-  },
-  "Plot": {
-    "Plot <0>": {
-      "plots": [
-        {
-          "axis": [
-            {
-              "autoFit": true
-            }
-          ],
-          "height": 338,
-          "series": [
-            {
-              "color": [
-                0.2980392277240753,
-                0.44705885648727417,
-                0.6901960968971252,
-                1.0
-              ],
-              "id": "NT:/SmartDashboard/Turn RPM #0"
-            }
-          ]
-        }
-      ],
-      "window": {
-        "visible": false
-      }
-    }
   }
 }

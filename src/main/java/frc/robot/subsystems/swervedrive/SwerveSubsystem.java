@@ -146,6 +146,20 @@ public class SwerveSubsystem extends SubsystemBase
       swerveDrive.updateOdometry();
       vision.updatePoseEstimation(swerveDrive);
     }
+    // Angle conversion factor is 360 / (GEAR RATIO)
+    //  In this case the gear ratio is 150.0/7.0 motor revolutions per wheel rotation.
+    //  The encoder resolution per motor revolution is 1 per motor revolution.
+    //
+    double angleConversionFactor = SwerveMath.calculateDegreesPerSteeringRotation(21.42);
+    // Motor conversion factor is (PI * WHEEL DIAMETER IN METERS) / (GEAR RATIO).
+    //  In this case the wheel diameter is 4 inches, which must be converted to meters to get meters/second.
+    //  The gear ratio is 6.75 motor revolutions per wheel rotation.
+    //  The encoder resolution per motor revolution is 1 per motor revolution.
+    double driveConversionFactor = SwerveMath.calculateMetersPerRotation(Units.inchesToMeters(4), 8.14);
+    //System.out.println("\"conversionFactors\": {");
+    //System.out.println("\t\"angle\": {\"factor\": " + angleConversionFactor + "},");
+    //System.out.println("\t\"drive\": {\"factor\": " + driveConversionFactor + "}");
+    //System.out.println("}");
   }
 
   @Override

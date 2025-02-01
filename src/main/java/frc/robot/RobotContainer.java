@@ -121,7 +121,7 @@ public class RobotContainer
       drivebase.setDefaultCommand(driveRobotOrientedAngularVelocity);
     } else
     {
-      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+      drivebase.setDefaultCommand(driveRobotOrientedAngularVelocity);
     }
 
     if (Robot.isSimulation())
